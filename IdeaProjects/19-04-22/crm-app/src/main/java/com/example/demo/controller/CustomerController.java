@@ -1,0 +1,69 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.Customer;
+import com.example.demo.repository.CustomerRepository;
+import com.example.demo.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/customers")
+public class CustomerController {
+
+    private final CustomerService customerService;
+
+    @Autowired
+    public CustomerController(CustomerService customerService) {
+        this.customerService=customerService;
+    }
+
+    @GetMapping("/list")
+    public String getAllCustomers(Model model)
+    {
+        List<Customer> list=customerService.getAllCustomer();
+        model.addAttribute("customers",list);
+        return "customer-list";
+    }
+    @GetMapping("/showFormForAdd")
+    public String showFormForAdd(Model theModel)
+    {
+        Customer theCustomer=new Customer();
+        theModel.addAttribute("customer",theCustomer);
+        return "customer-form";
+    }
+
+    @PostMapping("/save")
+    public String save(@ModelAttribute("customer")Customer customer)
+    {
+        Customer c=customerService.createCustomer(customer);
+        System.out.println(c);
+        return "redirect:/customers/list";
+    }
+    @PostMapping("/update")
+    public String update(@ModelAttribute("customer")Customer customer)
+    {
+       customerService.updateCustomer(customer);
+        
+        return "redirect:/customers/list";
+    }
+    @GetMapping("/showFormForUpdate")
+    public String showUpdate(@RequestParam("id") int theId,
+    Model theModel) {
+
+    Customer theCustomer = customerService.findCustomer(theId);
+   
+    theModel.addAttribute("customer", theCustomer);
+    return "showFormForUpdate";
+    }
+
+    @GetMapping("/delete")
+    public String deleById(@RequestParam("id") int id)
+    {
+        customerService.deleteCustomer(id);
+        return "redirect:/customers/list";
+    }
+}

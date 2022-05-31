@@ -1,0 +1,33 @@
+server:
+  port: 0
+spring:
+  application:
+    name: student-ws
+  boot:
+    admin:
+      client:
+        url:
+        - http://localhost:5000  
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/cs_db
+    username: root
+    password: root
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin@localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*'

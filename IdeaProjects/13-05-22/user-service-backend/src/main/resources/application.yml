@@ -1,0 +1,18 @@
+server:
+   port: 9090
+#  port: 5000
+spring:
+  application:
+    name: user-service
+  datasource:
+      url: jdbc:mysql://localhost:3306/hr
+      username: root
+      password: 8520
+#    url: jdbc:mysql://database-1.cswqecu74uuv.us-east-1.rds.amazonaws.com:3306/hr
+#    username: admin
+#    password: admin1234
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
